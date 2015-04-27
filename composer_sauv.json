@@ -1,0 +1,22 @@
+{
+    "name": "vendor_name/package_name",
+    "description": "description_text",
+    "minimum-stability": "stable",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "author's name",
+            "email": "email@example.com"
+        }
+    ],
+    "repositories": [
+        {
+            "url": "https://github.com/koriym/Ray.Di.git",
+            "type": "git"
+        }
+    ],
+    "require": {
+        "koriym/Ray.Di": "~2.0.0",
+        "gabrielbull/websocket-client": "dev-master"
+    }
+}
