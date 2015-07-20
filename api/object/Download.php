@@ -15,7 +15,7 @@ class Download extends Link
         $this->averageSpeed = -1;
         $this->timeLeft = -1;
         $this->pidPython = -1;
-        $this->infosPlowdown = '';
+        $this->hasInfosPlowdown = '';
     }
 
     /**
@@ -95,17 +95,17 @@ class Download extends Link
     /**
      * @param string $infosPlowdown
      */
-    public function setInfosPlowdown($infosPlowdown)
+    public function setHasInfosPlowdown($hasInfosPlowdown)
     {
-        $this->infosPlowdown = $infosPlowdown;
+        $this->hasInfosPlowdown = $hasInfosPlowdown;
     }
 
     /**
      * @return string
      */
-    public function getInfosPlowdown()
+    public function getHasInfosPlowdown()
     {
-        return $this->infosPlowdown;
+        return $this->hasInfosPlowdown;
     }
 
     public function start()
@@ -134,7 +134,7 @@ class Download extends Link
         $this->averageSpeed = $pdoDownload->average_speed;
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
-        $this->infosPlowdown = $pdoDownload->infos_plowdown;
+        $this->hasInfosPlowdown = $pdoDownload->infos_plowdown ? true : false;
     }
 
     function readInformationsFromLog()

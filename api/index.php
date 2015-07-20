@@ -30,6 +30,7 @@ $app->get(      '/downloads',                      'getDownloads');
 $app->get(      '/downloads/search/:query',         'findDownloadByName');
 $app->get(      '/downloads/availability/:id',         'checkDownloadAvailability');
 $app->get(      '/downloads/:id',                   'getDownload');
+$app->get(      '/downloads/infos/:id',             'getInfosPlowdown');
 $app->post(     '/downloads',                      'addDownload');
 $app->post(     '/downloads/remove',               'deleteDownloads');
 $app->post(     '/downloads/start',                'startDownloads');
@@ -37,6 +38,7 @@ $app->post(     '/downloads/stop',                 'stopDownloads');
 $app->post(     '/downloads/import',               'importDownloads');
 $app->put(      '/downloads/:id',                   'updateDownload');
 $app->delete(   '/downloads/:id',                   'deleteDownload');
+$app->delete(   '/downloads/infos/:id',             'deleteInfosPlowdown');
 
 $app->post(     '/downloads/test',                  'test');
 // link

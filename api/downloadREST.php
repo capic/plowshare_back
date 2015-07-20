@@ -15,6 +15,7 @@ include_once 'constant.php';
 include_once 'object/Link.php';
 include_once 'object/Download.php';
 include_once 'object/Message.php';
+include_once 'object/InfosPlowdown.php';
 include_once 'downloadCommon.php';
 
 /**
@@ -72,6 +73,28 @@ function getDownload($id) {
         echo json_encode($download);
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+function getInfosPlowdown($id) {
+    $sql_query = "select infos_plowdown from download where id=:id";
+    try {
+        $dbCon = getConnection();
+        $stmt = $dbCon->prepare($sql_query);
+        $stmt->bindParam("id", $id);
+        $stmt->execute();
+        $pdoDownload = $stmt->fetchObject();
+        $dbCon = null;
+
+        $infosPlowdown = new InfosPlowdown('');
+
+        if ($pdoDownload) {
+            $infosPlowdown->setInfos($pdoDownload->infos_plowdown);
+        }
+
+        echo json_encode($infosPlowdown);
+    } catch (PDOException $e) {
+        throw $e;
     }
 }
 
@@ -195,6 +218,21 @@ function deleteDownloads() {
     try {
         $dbCon = getConnection();
         $stmt = $dbCon->prepare($sql);
+        $status = $stmt->execute();
+        $dbCon = null;
+        echo '{"status" : ' . json_encode($status) . '}';
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+function deleteInfosPlowdown($id) {
+    $sql = "UPDATE download SET infos_plowdown WHERE id=:id";
+
+    try {
+        $dbCon = getConnection();
+        $stmt = $dbCon->prepare($sql);
+        $stmt->bindParam("id", $id);
         $status = $stmt->execute();
         $dbCon = null;
         echo '{"status" : ' . json_encode($status) . '}';
