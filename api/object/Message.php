@@ -2,6 +2,7 @@
 
 class Message {
     public $text;
+    public $source;
 
     function __construct() {
         $this->text = "";
@@ -23,5 +24,19 @@ class Message {
         return $this->text;
     }
 
+    /**
+     * @param mixed $source
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
 }

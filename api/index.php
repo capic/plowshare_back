@@ -12,9 +12,11 @@ require 'utils.php';
 $app = new \Slim\Slim();
 
 $context = new ZMQContext();
+
 $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
 $socket->connect("tcp://127.0.0.1:6666");
 
+$app->zmpContext = $context;
 $app->zmqSocket = $socket;
 
 include_once 'downloadREST.php';

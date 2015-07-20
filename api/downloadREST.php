@@ -1,9 +1,7 @@
 <?php
-/* - attention curl créé un nouveau processus avec un autre pid => donc le kill ne marche pas
+/*
  * - protéger par authentificaton oauth2
  * - apparemment on ne peut pas démarrer le téléchargement d'un lien si déjà un lien en cours de téléchargement
- * - supprimer le fichier de log à la suppression
- * - modifier le script habituel pour les téléchargement
  * - mettre au statut terminé quand le téléchargement est fini
  * - suppression d'un téléchargement en cours doit killer le processus
  * - limiter un telechargement par hebergeur
@@ -262,7 +260,9 @@ function startDownloads() {
         $download = getDownloadObject($id);
         $download->start();
 
-        //$download = updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSize(), DOWNLOAD_STATUS_STARTING, $download->getProgress(), $download->getAverageSpeed(), $download->getTimeLeft());
+        $downloadSocket = $app->zmpContext->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+        $downloadSocket->connect("tcp://127.0.0.1:9000");
+
         $download = getDownloadObject($id);
         array_push($tabDownloads, $download);
     }

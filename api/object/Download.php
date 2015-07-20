@@ -15,6 +15,7 @@ class Download extends Link
         $this->averageSpeed = -1;
         $this->timeLeft = -1;
         $this->pidPython = -1;
+        $this->infosPlowdown = '';
     }
 
     /**
@@ -91,11 +92,28 @@ class Download extends Link
         return $this->pidPython;
     }
 
+    /**
+     * @param string $infosPlowdown
+     */
+    public function setInfosPlowdown($infosPlowdown)
+    {
+        $this->infosPlowdown = $infosPlowdown;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInfosPlowdown()
+    {
+        return $this->infosPlowdown;
+    }
+
     public function start()
     {
         $command = "/usr/bin/python /var/www/download_basic.py start " . $this->id . " &";
 
         popen($command,"r");
+  //      proc_open($command, )
     }
 
     public function stop()
@@ -116,6 +134,7 @@ class Download extends Link
         $this->averageSpeed = $pdoDownload->average_speed;
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
+        $this->infosPlowdown = $pdoDownload->infos_plowdown;
     }
 
     function readInformationsFromLog()

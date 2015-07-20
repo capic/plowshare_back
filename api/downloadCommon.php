@@ -111,9 +111,9 @@ function checkDownloadStatus($download)
         if ($status == DOWNLOAD_STATUS_IN_PROGRESS) {
             if ($download->getProgress() == 100) {
                 $status = DOWNLOAD_STATUS_FINISHED;
-            } else {
+            }/* else {
                 $status = DOWNLOAD_STATUS_WAITING;
-            }
+            }*/
         }
 
         $download = updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSize(), $status, $download->getProgress(), $download->getAverageSpeed(), $download->getTimeLeft(), $download->getPidPython());
