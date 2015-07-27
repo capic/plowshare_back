@@ -38,7 +38,8 @@ $app->post(     '/downloads/stop',                 'stopDownloads');
 $app->post(     '/downloads/import',               'importDownloads');
 $app->put(      '/downloads/:id',                   'updateDownload');
 $app->delete(   '/downloads/:id',                   'deleteDownload');
-$app->delete(   '/downloads/infos/:id',             'deleteInfosPlowdown');
+$app->post(   '/downloads/infos/',             'deleteInfosPlowdown');
+$app->post(   '/downloads/priority/',             'updateDownloadPriority');
 
 $app->post(     '/downloads/test',                  'test');
 // link

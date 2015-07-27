@@ -7,15 +7,20 @@ class Download extends Link
     public $averageSpeed;
     public $timeLeft;
     public $pidPython;
+    public $priority;
 
     function __construct()
     {
         $this->id = -1;
+        $this->origin_size = -1;
         $this->progress = -1;
         $this->averageSpeed = -1;
         $this->timeLeft = -1;
         $this->pidPython = -1;
-        $this->hasInfosPlowdown = '';
+        $this->lifecycle_insert_date =  null;
+        $this->lifecycle_update_date =  null;
+        $this->hasInfosPlowdown = false;
+        $this->priority = 0;
     }
 
     /**
@@ -32,6 +37,22 @@ class Download extends Link
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param int $origin_size
+     */
+    public function setOriginSize($origin_size)
+    {
+        $this->origin_size = $origin_size;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOriginSize()
+    {
+        return $this->origin_size;
     }
 
     /**
@@ -93,6 +114,38 @@ class Download extends Link
     }
 
     /**
+     * @param null $lifecycle_insert_date
+     */
+    public function setLifecycleInsertDate($lifecycle_insert_date)
+    {
+        $this->lifecycle_insert_date = $lifecycle_insert_date;
+    }
+
+    /**
+     * @return null
+     */
+    public function getLifecycleInsertDate()
+    {
+        return $this->lifecycle_insert_date;
+    }
+
+    /**
+     * @param null $lifecycle_update_date
+     */
+    public function setLifecycleUpdateDate($lifecycle_update_date)
+    {
+        $this->lifecycle_update_date = $lifecycle_update_date;
+    }
+
+    /**
+     * @return null
+     */
+    public function getLifecycleUpdateDate()
+    {
+        return $this->lifecycle_update_date;
+    }
+
+    /**
      * @param string $infosPlowdown
      */
     public function setHasInfosPlowdown($hasInfosPlowdown)
@@ -106,6 +159,22 @@ class Download extends Link
     public function getHasInfosPlowdown()
     {
         return $this->hasInfosPlowdown;
+    }
+
+    /**
+     * @param int $priority
+     */
+    public function setPriority($priority)
+    {
+        $this->priority = $priority;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 
     public function start()
@@ -128,13 +197,17 @@ class Download extends Link
         $this->id = $pdoDownload->id;
         $this->name = $pdoDownload->name;
         $this->link = $pdoDownload->link;
+        $this->origin_size = $pdoDownload->origin_size;
         $this->size = $pdoDownload->size;
         $this->status = $pdoDownload->status;
         $this->progress = $pdoDownload->progress;
         $this->averageSpeed = $pdoDownload->average_speed;
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
+        $this->lifecycle_insert_date = $pdoDownload->lifecycle_insert_date;
+        $this->lifecycle_update_date = $pdoDownload->lifecycle_update_date;
         $this->hasInfosPlowdown = $pdoDownload->infos_plowdown ? true : false;
+        $this->priority = $pdoDownload->priority;
     }
 
     function readInformationsFromLog()

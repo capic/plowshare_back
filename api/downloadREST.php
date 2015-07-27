@@ -226,13 +226,40 @@ function deleteDownloads() {
     }
 }
 
-function deleteInfosPlowdown($id) {
-    $sql = "UPDATE download SET infos_plowdown WHERE id=:id";
+function deleteInfosPlowdown() {
+    global $app;
+    $req = $app->request(); // Getting parameter with names
+    $object = json_decode($req->getBody());
+    $id = $object->id;
+
+    $sql = "UPDATE download SET infos_plowdown = '' WHERE id=:id";
 
     try {
         $dbCon = getConnection();
         $stmt = $dbCon->prepare($sql);
         $stmt->bindParam("id", $id);
+        $status = $stmt->execute();
+        $dbCon = null;
+        echo '{"status" : ' . json_encode($status) . '}';
+    } catch(PDOException $e) {
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+function updateDownloadPriority() {
+    global $app;
+    $req = $app->request(); // Getting parameter with names
+    $object = json_decode($req->getBody());
+    $id = $object->id;
+    $priority = $object->priority;
+
+    $sql = "UPDATE download SET priority=:priority WHERE id=:id";
+
+    try {
+        $dbCon = getConnection();
+        $stmt = $dbCon->prepare($sql);
+        $stmt->bindParam("id", $id);
+        $stmt->bindParam("priority", $priority);
         $status = $stmt->execute();
         $dbCon = null;
         echo '{"status" : ' . json_encode($status) . '}';
