@@ -9,11 +9,11 @@ function checkLinkAvailability($linkToAdd)
 
     if ($fileInfo != null) {
         $link->setName($fileInfo->name);
-        $link->setSize($fileInfo->size);
+        $link->setSizeFile($fileInfo->size);
         $link->setStatus(LINK_STATUS_ON_LINE);
     } else {
         $link->setName($linkToAdd);
-        $link->setSize(0);
+        $link->setSizeFile(0);
         $link->setStatus(LINK_STATUS_DELETED);
     }
 
@@ -67,14 +67,14 @@ function getLinkObject($id)
 
 function updateLinkObject($id, $name, $link, $size, $status)
 {
-    $sql = "UPDATE link SET name=:name, link=:link, size=:size, size=:size, status=:status WHERE id=:id";
+    $sql = "UPDATE link SET name=:name, link=:link, sizeFile=:sizeFile, sizeFile=:sizeFile, status=:status WHERE id=:id";
 
     try {
         $dbCon = getConnection();
         $stmt = $dbCon->prepare($sql);
         $stmt->bindParam("name", $paramName);
         $stmt->bindParam("link", $paramLink);
-        $stmt->bindParam("size", $paramSize);
+        $stmt->bindParam("sizeFile", $paramSize);
         $stmt->bindParam("status", $paramStatus);
         $stmt->bindParam("id", $id);
 
@@ -107,7 +107,7 @@ function refreshLinkObject($link)
 {
     $link = checkLinkAvailability($link->getLink());
 
-    $status = updateLinkObject($link->getId(), $link->getName(), $link->getLink(), $link->getSize(), $link->getStatus());
+    $status = updateLinkObject($link->getId(), $link->getName(), $link->getLink(), $link->getSizeFile(), $link->getStatus());
 
     return $status;
 }
@@ -117,7 +117,7 @@ function addDownloadFromLinkObject($idLink)
     $link = getLinkObject($idLink);
     $paramName = $link->name; // Getting parameter with names
     $paramLink = $link->link; // Getting parameter with names
-    $paramSize = $link->size;
+    $paramSize = $link->sizeFile;
     $paramStatus = DOWNLOAD_STATUS_WAITING;
 
     $download = null;

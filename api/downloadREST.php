@@ -7,8 +7,8 @@
  * - limiter un telechargement par hebergeur
  * - quand des nouveaux fichiers sont ajoutés et que les téléchargement sont en cours, ces nouveaux telechargements doivent aussi être pris en compte
  * - trouver le moyen d'avoir un telechargement continue tant qu'il y a des telechargment en attente
- * - la size d'un lien change si il y a reprise, le pourcentage aussi
- * - problème lorsque le téléchargement est à 100% le download n'a pas le bon progress ni le bon statut
+ * - la sizeFile d'un lien change si il y a reprise, le pourcentage aussi
+ * - problème lorsque le téléchargement est à 100% le download n'a pas le bon progressPart ni le bon statut
  * - décompresser à la fin du téléchargement
  */
 include_once 'constant.php';
@@ -137,13 +137,13 @@ function addDownload() {
     $downloadPost = json_decode($req->getBody());
     $paramName = $downloadPost->name; // Getting parameter with names
     $paramLink = $downloadPost->link; // Getting parameter with names
-    $paramSize = $downloadPost->size;
+    $paramSizeFile = $downloadPost->sizeFile;
     $paramStatus = DOWNLOAD_STATUS_WAITING;
 
     try {
         $download = null;
 
-        $id = addDownloadObject($paramName, $paramLink, $paramSize, $paramStatus, 0, 0, 0, 0, 0);
+        $id = addDownloadObject($paramName, $paramLink, $paramSizeFile, 0,0,0,$paramStatus, 0, 0, 0, 0, 0, 0);
 
         // set the object if no error
         if ($id != null) {
@@ -151,12 +151,16 @@ function addDownload() {
             $download->setId($id);
             $download->setName($paramName);
             $download->setLink($paramLink);
-            $download->setSize($paramSize);
+            $download->setSizeFile($paramSize);
+            $download->setSizePart(0);
+            $download->setSizeFileDownloaded(0);
+            $download->setSizePartDownloaded(0);
             $download->setStatus($paramStatus);
             $download->setProcessCurl(null);
             $download->setProcessPlowdown(null);
-            $download->setProgress(0);
+            $download->setProgressPart(0);
             $download->setAverageSpeed(0);
+            $download->setTimeSpent(0);
             $download->setTimeLeft(0);
         } else {
             throw new PDOException;
@@ -181,7 +185,7 @@ function updateDownload($id) {
     try {
         $download = getDownloadObject($id);
 
-        $status = updateDownloadObject($id, $paramName, $paramLink, $download->getSize(), $paramStatus, $download->getProcessPlowdown()->getPid(), $download->getProcessCurl()->getPid(), $download->getProgress(), $download->getAverageSpeed(), $download->getTimeLeft());
+        $status = updateDownloadObject($id, $paramName, $paramLink, $download->getSizeFile(), $download->getSizePart(), $download->getSizeFileDownloaded(), $download->getSizePartDownloaded(), $paramStatus, $download->getProcessPlowdown()->getPid(), $download->getProcessCurl()->getPid(), $download->getProgressPart(), $download->getAverageSpeed(), $download->getTimeSpent(), $download->getTimeLeft());
         echo '{"status" : ' . json_encode($status) . '}';
     } catch(PDOException $e) {
         echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -310,7 +314,7 @@ function startDownloads() {
                 $process->setLogfile($logfile);
                 $process->start();
 
-                $download = updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSize(), DOWNLOAD_STATUS_IN_PROGRESS , $download->getProcessPlowdown()->getPid() , $download->getProcessCurl()->getPid(), $download->getProgress(), $download->getAverageSpeed(), $download->getTimeLeft());
+                $download = updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSizeFile(), DOWNLOAD_STATUS_IN_PROGRESS , $download->getProcessPlowdown()->getPid() , $download->getProcessCurl()->getPid(), $download->getProgressPart(), $download->getAverageSpeed(), $download->getTimeLeft());
 
                 array_push($tabDownloads, $download);
             }
@@ -379,7 +383,7 @@ function stopDownloads() {
         $download = getDownloadObject($id);
         $download->stop();
 
-       // $download = updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSize(), DOWNLOAD_STATUS_STARTING, $download->getProcessPlowdown()->getPid() , $download->getProcessCurl()->getPid(), $download->getProgress(), $download->getAverageSpeed(), $download->getTimeLeft());
+       // $download = updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSizeFile(), DOWNLOAD_STATUS_STARTING, $download->getProcessPlowdown()->getPid() , $download->getProcessCurl()->getPid(), $download->getProgressPart(), $download->getAverageSpeed(), $download->getTimeLeft());
         $download = getDownloadObject($id);
         array_push($tabDownloads, $download);
     }
@@ -417,7 +421,7 @@ function checkDownloadAvailability($id) {
         }
 
 
-        updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSize(),$download->getStatus(), $download->getProgress(), $download->getAverageSpeed(), $download->getTimeLeft(), $pidPython);
+        updateDownloadObject($download->getId(), $download->getName(), $download->getLink(), $download->getSize(),$download->getStatus(), $download->getProgressPart(), $download->getAverageSpeed(), $download->getTimeLeft(), $pidPython);
     }
 
 

@@ -15,7 +15,7 @@
     }
 
     function checkAvailability($link) {
-        $command = '/usr/bin/plowprobe --printf \'# {"name":"%f","size":"%s"}\' ' . $link;
+        $command = '/usr/bin/plowprobe --printf \'# {"name":"%f","sizeFile":"%s"}\' ' . $link;
         $command_return = shell_exec($command);
 
         return $command_return;

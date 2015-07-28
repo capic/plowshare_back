@@ -141,7 +141,7 @@ class SessionCookie extends \Slim\Middleware
         $value = serialize($_SESSION);
 
         if (strlen($value) > 4096) {
-            $this->app->getLog()->error('WARNING! Slim\Middleware\SessionCookie data size is larger than 4KB. Content save failed.');
+            $this->app->getLog()->error('WARNING! Slim\Middleware\SessionCookie data sizeFile is larger than 4KB. Content save failed.');
         } else {
             $this->app->setCookie(
                 $this->settings['name'],

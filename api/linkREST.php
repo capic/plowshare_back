@@ -123,7 +123,7 @@ function updateLink($id) {
     $req = $app->request();
     $paramName = $req->params('name');
     $paramLink = $req->params('link');
-    $paramSize = $req->params('size');
+    $paramSize = $req->params('sizeFile');
     $paramStatus = $req->params('status');
 
     try {
@@ -159,7 +159,7 @@ function addLink() {
     $object = json_decode($req->getBody());
     $paramLink = $object->link;
 
-    $sql = "INSERT INTO link (name, link, size, status) VALUES (:name, :link, :size, :status)";
+    $sql = "INSERT INTO link (name, link, sizeFile, status) VALUES (:name, :link, :sizeFile, :status)";
 
     try {
         $link = checkLinkAvailability($paramLink);
@@ -167,11 +167,11 @@ function addLink() {
         $dbCon = getConnection();
         $stmt = $dbCon->prepare($sql);
         $name = $link->getName();
-        $size = $link->getSize();
+        $size = $link->getSizeFile();
         $status = $link->getStatus();
         $stmt->bindParam("name", $name);
         $stmt->bindParam("link", $paramLink);
-        $stmt->bindParam("size", $size);
+        $stmt->bindParam("sizeFile", $size);
         $stmt->bindParam("status", $status);
 
         $stmt->execute();

@@ -3,24 +3,32 @@ include_once 'Link.php';
 
 class Download extends Link
 {
-    public $progress;
+    public $progressPart;
     public $averageSpeed;
+    public $timeSpent;
     public $timeLeft;
     public $pidPython;
     public $priority;
+    public $sizePart;
+    public $sizeFileDownloaded;
+    public $sizePartDownloaded;
 
     function __construct()
     {
         $this->id = -1;
-        $this->origin_size = -1;
-        $this->progress = -1;
+        $this->sizeFile = -1;
+        $this->progressPart = -1;
         $this->averageSpeed = -1;
+        $this->timeSpent = -1;
         $this->timeLeft = -1;
         $this->pidPython = -1;
         $this->lifecycle_insert_date =  null;
         $this->lifecycle_update_date =  null;
         $this->hasInfosPlowdown = false;
         $this->priority = 0;
+        $this->sizePart = -1;
+        $this->sizeFileDownloaded = -1;
+        $this->sizePartDownloaded = -1;
     }
 
     /**
@@ -58,17 +66,17 @@ class Download extends Link
     /**
      * @param mixed $progress
      */
-    public function setProgress($progress)
+    public function setProgressPart($progress)
     {
-        $this->progress = $progress;
+        $this->progressPart = $progress;
     }
 
     /**
      * @return mixed
      */
-    public function getProgress()
+    public function getProgressPart()
     {
-        return $this->progress;
+        return $this->progressPart;
     }
 
     /**
@@ -85,6 +93,22 @@ class Download extends Link
     public function getAverageSpeed()
     {
         return $this->averageSpeed;
+    }
+
+    /**
+     * @param int $timeSpent
+     */
+    public function setTimeSpent($timeSpent)
+    {
+        $this->timeSpent = $timeSpent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTimeSpent()
+    {
+        return $this->timeSpent;
     }
 
     /**
@@ -177,6 +201,56 @@ class Download extends Link
         return $this->priority;
     }
 
+    /**
+     * @param int $sizeFileDownloaded
+     */
+    public function setSizeFileDownloaded($sizeFileDownloaded)
+    {
+        $this->sizeFileDownloaded = $sizeFileDownloaded;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizeFileDownloaded()
+    {
+        return $this->sizeFileDownloaded;
+    }
+
+    /**
+     * @param int $sizePart
+     */
+    public function setSizePart($sizePart)
+    {
+        $this->sizePart = $sizePart;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizePart()
+    {
+        return $this->sizePart;
+    }
+
+    /**
+     * @param int $sizePartDownloaded
+     */
+    public function setSizePartDownloaded($sizePartDownloaded)
+    {
+        $this->sizePartDownloaded = $sizePartDownloaded;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSizePartDownloaded()
+    {
+        return $this->sizePartDownloaded;
+    }
+
+
+
     public function start()
     {
         $command = "/usr/bin/python /var/www/download_basic.py start " . $this->id . " &";
@@ -197,11 +271,14 @@ class Download extends Link
         $this->id = $pdoDownload->id;
         $this->name = $pdoDownload->name;
         $this->link = $pdoDownload->link;
-        $this->origin_size = $pdoDownload->origin_size;
-        $this->size = $pdoDownload->size;
+        $this->sizeFile = $pdoDownload->size_file;
+        $this->sizePart = $pdoDownload->size_part;
+        $this->sizeFileDownloaded = $pdoDownload->size_file_downloaded;
+        $this->sizePartDownloaded = $pdoDownload->size_part_downloaded;
         $this->status = $pdoDownload->status;
-        $this->progress = $pdoDownload->progress;
+        $this->progressPart = $pdoDownload->progress_part;
         $this->averageSpeed = $pdoDownload->average_speed;
+        $this->timeSpent = $pdoDownload->time_spent;
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
         $this->lifecycle_insert_date = $pdoDownload->lifecycle_insert_date;
@@ -278,10 +355,10 @@ class Download extends Link
                         break;
                 }
 
-                $this->progress = intval($progress);
+                $this->progressPart = intval($progress);
                 $this->averageSpeed = intval($averageSpeed);
                 $this->timeLeft = intval($timeLeftHour) * 3600 + intval($timeLeftMin) * 60 + intval($timeLeftSec);
-                $this->size = $size;
+                $this->sizeFile = $size;
             }
         }
     }

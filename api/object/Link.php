@@ -3,7 +3,7 @@ class Link {
     public $id;
     public $name;
     public $link;
-    public $size;
+    public $sizeFile;
     public $status;
 
     /**
@@ -49,15 +49,15 @@ class Link {
     }/**
      * @param mixed $size
      */
-    public function setSize($size)
+    public function setSizeFile($size)
     {
-        $this->size = $size;
+        $this->sizeFile = $size;
     }/**
      * @return mixed
      */
-    public function getSize()
+    public function getSizeFile()
     {
-        return $this->size;
+        return $this->sizeFile;
     }
 
     public function getStatus()
@@ -74,7 +74,7 @@ class Link {
         $this->id = $pdoLink->id;
         $this->name = $pdoLink->name;
         $this->link = $pdoLink->link;
-        $this->size = $pdoLink->size;
+        $this->sizeFile = $pdoLink->size;
         $this->status = $pdoLink->status;
     }
 }
