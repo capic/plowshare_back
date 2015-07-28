@@ -294,7 +294,9 @@ class Download extends Link
         $this->sizeFileDownloaded = $pdoDownload->size_file_downloaded;
         $this->sizePartDownloaded = $pdoDownload->size_part_downloaded;
         $this->status = $pdoDownload->status;
-        $this->progressFile = $pdoDownload->progress_file;
+        if ($download->sizeFile > 0) {
+            $this->progressFile = ($download->size_file_downloaded * 100) / $download->sizeFile;
+        }
         $this->progressPart = $pdoDownload->progress_part;
         $this->averageSpeed = $pdoDownload->average_speed;
         $this->timeSpent = $pdoDownload->time_spent;
