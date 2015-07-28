@@ -3,6 +3,7 @@ include_once 'Link.php';
 
 class Download extends Link
 {
+    public $progressFile;
     public $progressPart;
     public $averageSpeed;
     public $timeSpent;
@@ -17,6 +18,7 @@ class Download extends Link
     {
         $this->id = -1;
         $this->sizeFile = -1;
+        $this->progressFile = -1;
         $this->progressPart = -1;
         $this->averageSpeed = -1;
         $this->timeSpent = -1;
@@ -61,6 +63,22 @@ class Download extends Link
     public function getOriginSize()
     {
         return $this->origin_size;
+    }
+    
+     /**
+     * @param mixed $progress
+     */
+    public function setProgressFile($progress)
+    {
+        $this->progressFile = $progress;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProgressFile()
+    {
+        return $this->progressFile;
     }
 
     /**
@@ -276,6 +294,7 @@ class Download extends Link
         $this->sizeFileDownloaded = $pdoDownload->size_file_downloaded;
         $this->sizePartDownloaded = $pdoDownload->size_part_downloaded;
         $this->status = $pdoDownload->status;
+        $this->progressFile = $pdoDownload->progress_file;
         $this->progressPart = $pdoDownload->progress_part;
         $this->averageSpeed = $pdoDownload->average_speed;
         $this->timeSpent = $pdoDownload->time_spent;
