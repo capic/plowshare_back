@@ -9,21 +9,24 @@ class Download extends Link
     public $timeSpent;
     public $timeLeft;
     public $pidPython;
+    public $pidPlowdown;
     public $priority;
     public $sizePart;
     public $sizeFileDownloaded;
     public $sizePartDownloaded;
+    public $filePath;
 
     function __construct()
     {
         $this->id = -1;
         $this->sizeFile = -1;
-        $this->progressFile = -1;
-        $this->progressPart = -1;
+        $this->progressFile = 0;
+        $this->progressPart = 0;
         $this->averageSpeed = -1;
         $this->timeSpent = -1;
         $this->timeLeft = -1;
         $this->pidPython = -1;
+        $this->pidPlowdown = -1;
         $this->lifecycle_insert_date =  null;
         $this->lifecycle_update_date =  null;
         $this->hasInfosPlowdown = false;
@@ -31,6 +34,7 @@ class Download extends Link
         $this->sizePart = -1;
         $this->sizeFileDownloaded = -1;
         $this->sizePartDownloaded = -1;
+        $this->filePath = '';
     }
 
     /**
@@ -302,10 +306,12 @@ class Download extends Link
         $this->timeSpent = $pdoDownload->time_spent;
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
+        $this->pidPlowdown = $pdoDownload->pid_plowdown;
         $this->lifecycle_insert_date = $pdoDownload->lifecycle_insert_date;
         $this->lifecycle_update_date = $pdoDownload->lifecycle_update_date;
         $this->hasInfosPlowdown = $pdoDownload->infos_plowdown ? true : false;
         $this->priority = $pdoDownload->priority;
+        $this->filePath = $pdoDownload->file_path;
     }
 
     function readInformationsFromLog()
