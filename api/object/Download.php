@@ -292,6 +292,7 @@ class Download extends Link
     {
         $this->id = $pdoDownload->id;
         $this->name = $pdoDownload->name;
+        $this->package = $pdoDownload->package;
         $this->link = $pdoDownload->link;
         $this->sizeFile = $pdoDownload->size_file;
         $this->sizePart = $pdoDownload->size_part;

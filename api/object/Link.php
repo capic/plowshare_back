@@ -2,6 +2,7 @@
 class Link {
     public $id;
     public $name;
+    public $package;
     public $link;
     public $sizeFile;
     public $status;
@@ -73,6 +74,7 @@ class Link {
     public function fromPdoLink($pdoLink) {
         $this->id = $pdoLink->id;
         $this->name = $pdoLink->name;
+        $this->package = $pdoLink->package;
         $this->link = $pdoLink->link;
         $this->sizeFile = $pdoLink->size;
         $this->status = $pdoLink->status;
