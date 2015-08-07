@@ -6,6 +6,7 @@ class Download extends Link
     public $progressFile;
     public $progressPart;
     public $averageSpeed;
+    public $currentSpeed;
     public $timeSpent;
     public $timeLeft;
     public $pidPython;
@@ -23,6 +24,7 @@ class Download extends Link
         $this->progressFile = 0;
         $this->progressPart = 0;
         $this->averageSpeed = -1;
+        $this->currentSpeed = -1;
         $this->timeSpent = -1;
         $this->timeLeft = -1;
         $this->pidPython = -1;
@@ -304,6 +306,7 @@ class Download extends Link
         }
         $this->progressPart = $pdoDownload->progress_part;
         $this->averageSpeed = $pdoDownload->average_speed;
+        $this->currentSpeed = $pdoDownload->current_speed;
         $this->timeSpent = $pdoDownload->time_spent;
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
