@@ -1,5 +1,5 @@
 <?php
-define("DB_HOST", "localhost");
+define("DB_HOST", "192.168.1.101");
 define("DB_USERNAME", "root");
 define("DB_PASSWORD", "capic_20_04_1982");
 define("DB_NAME", "plowshare");
