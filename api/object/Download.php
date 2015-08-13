@@ -16,6 +16,7 @@ class Download extends Link
     public $sizeFileDownloaded;
     public $sizePartDownloaded;
     public $filePath;
+    public $theoricalStartDatetime;
 
     function __construct()
     {
@@ -29,14 +30,15 @@ class Download extends Link
         $this->timeLeft = -1;
         $this->pidPython = -1;
         $this->pidPlowdown = -1;
-        $this->lifecycle_insert_date =  null;
-        $this->lifecycle_update_date =  null;
+        $this->lifecycleInsertDate =  0;
+        $this->lifecycleUpdateDate =  0;
         $this->hasInfosPlowdown = false;
         $this->priority = 0;
         $this->sizePart = -1;
         $this->sizeFileDownloaded = -1;
         $this->sizePartDownloaded = -1;
         $this->filePath = '';
+        $this->theoricalStartDatetime = 0;
     }
 
     /**
@@ -162,11 +164,11 @@ class Download extends Link
     }
 
     /**
-     * @param null $lifecycle_insert_date
+     * @param null $lifecycleInsertDate
      */
-    public function setLifecycleInsertDate($lifecycle_insert_date)
+    public function setLifecycleInsertDate($lifecycleInsertDate)
     {
-        $this->lifecycle_insert_date = $lifecycle_insert_date;
+        $this->lifecycleInsertDate = $lifecycleInsertDate;
     }
 
     /**
@@ -174,15 +176,15 @@ class Download extends Link
      */
     public function getLifecycleInsertDate()
     {
-        return $this->lifecycle_insert_date;
+        return $this->lifecycleInsertDate;
     }
 
     /**
-     * @param null $lifecycle_update_date
+     * @param null $lifecycleUpdateDate
      */
-    public function setLifecycleUpdateDate($lifecycle_update_date)
+    public function setLifecycleUpdateDate($lifecycleUpdateDate)
     {
-        $this->lifecycle_update_date = $lifecycle_update_date;
+        $this->lifecycleUpdateDate = $lifecycleUpdateDate;
     }
 
     /**
@@ -190,7 +192,7 @@ class Download extends Link
      */
     public function getLifecycleUpdateDate()
     {
-        return $this->lifecycle_update_date;
+        return $this->lifecycleUpdateDate;
     }
 
     /**
@@ -311,11 +313,12 @@ class Download extends Link
         $this->timeLeft = $pdoDownload->time_left;
         $this->pidPython = $pdoDownload->pid_python;
         $this->pidPlowdown = $pdoDownload->pid_plowdown;
-        $this->lifecycle_insert_date = $pdoDownload->lifecycle_insert_date;
-        $this->lifecycle_update_date = $pdoDownload->lifecycle_update_date;
+        $this->lifecycleInsertDate = strtotime($pdoDownload->lifecycle_insert_date) * 1000;
+        $this->lifecycleUpdateDate = strtotime($pdoDownload->lifecycle_update_date) * 1000;
         $this->hasInfosPlowdown = $pdoDownload->infos_plowdown ? true : false;
         $this->priority = $pdoDownload->priority;
         $this->filePath = $pdoDownload->file_path;
+        $this->theoricalStartDatetime = strtotime($pdoDownload->theorical_start_datetime) * 1000;
     }
 
     function readInformationsFromLog()
